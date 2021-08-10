@@ -5,21 +5,26 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     CharacterController characterController;
+    public float playerMoveSpeed;
 
-    public int playerMoveSpeed;
-
+    [SerializeField]
+    private float turnSpeed;
+    Animator anim;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        anim = GetComponentInChildren<Animator>();
     }
     void Update()
     {
-        var horizontalMove = Input.GetAxis("Horizontal");
-        var verticalMove = Input.GetAxis("Vertical");
+        var horizontalMovement = Input.GetAxis("Horizontal");
+        var verticalMovement = Input.GetAxis("Vertical");
 
-        var playerMove = new Vector3(horizontalMove, 0, verticalMove);
-        characterController.SimpleMove(playerMove * Time.deltaTime);
+        var playerMovement = new Vector3(horizontalMovement, 0, verticalMovement);
+        characterController.SimpleMove(playerMovement * Time.deltaTime * playerMoveSpeed);
+        anim.SetFloat("Speed",playerMovement.magnitude);
+
+        Quaternion newDirection = Quaternion.LookRotation(playerMovement);
+        transform.rotation = Quaternion.Slerp(transform.rotation, newDirection, Time.deltaTime * turnSpeed);
     }
-
-
 }
