@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,22 +5,21 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [SerializeField]
-    int startingHealth = 5;
+    int startHealth = 5;
+    [SerializeField]
     int currentHealth;
     private void OnEnable()
     {
-        currentHealth = startingHealth;
+        currentHealth = startHealth;
     }
-
     public void TakeDamage(int damageAmount)
     {
         currentHealth -= damageAmount;
-        if(currentHealth<=0)
+        if (currentHealth <= 0)
         {
             Die();
         }
     }
-
     private void Die()
     {
         gameObject.SetActive(false);
